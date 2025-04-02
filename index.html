@@ -40,14 +40,14 @@
         <canvas id="model-viewer"></canvas>
     </div>
 
-    <script>
+    Rozumiem, model wygląda na niedoświetlony. Najprawdopodobniej problem leży w oświetleniu Three.js. Domyślna scena Three.js jest pusta, co oznacza, że ​​nie ma w niej żadnego światła. Aby model był widoczny, musisz dodać do sceny oświetlenie.W Twoim kodzie dodałeś już oświetlenie, ale wygląda na to, że jest ono niewystarczające lub nieprawidłowo skonfigurowane.Aby to naprawić, proponuję dostosować oświetlenie w Twojej scenie Three.js. Poniżej znajdziesz zmodyfikowany kod JavaScript, który zawiera dwa rodzaje oświetlenia: AmbientLight i DirectionalLight. AmbientLight oświetla wszystkie obiekty w scenie równomiernie, a DirectionalLight symuluje światło padające z określonego kierunku.<script>
         document.addEventListener('DOMContentLoaded', function() {
             const canvas = document.getElementById('model-viewer');
             const scene = new THREE.Scene();
             const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
             const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setClearColor(0xf0f0f0); // Ustaw kolor tła taki sam jak w CSS
+            renderer.setClearColor(0xf0f0f0);
 
             // Dodaj oświetlenie do sceny
             const ambientLight = new THREE.AmbientLight(0x404040); // Miękkie, ogólne oświetlenie
@@ -59,14 +59,14 @@
 
             // Dodaj kontrolę orbit
             const controls = new THREE.OrbitControls(camera, renderer.domElement);
-            controls.enableDamping = true; // Dodaj tłumienie dla płynniejszych ruchów
+            controls.enableDamping = true;
             controls.dampingFactor = 0.1;
-            controls.screenSpacePanning = true; // Umożliwia przesuwanie sceny za pomocą klawisza Shift
-            controls.minDistance = 1; // Minimalna odległość przybliżenia
-            controls.maxDistance = 100; // Maksymalna odległość oddalenia
-            controls.target.set(0, 0, 0); // Ustaw punkt, na który patrzy kamera
+            controls.screenSpacePanning = true;
+            controls.minDistance = 1;
+            controls.maxDistance = 100;
+            controls.target.set(0, 0, 0);
 
-            camera.position.z = 5; // Domyślna pozycja kamery
+            camera.position.z = 5;
 
             // Załaduj model .glb
             const loader = new THREE.GLTFLoader();
@@ -82,9 +82,8 @@
                 model.position.y -= center.y;
                 model.position.z -= center.z;
 
-                // Ustaw punkt, na który patrzy kamera, na środek modelu
                 controls.target.set(model.position.x, model.position.y, model.position.z);
-                controls.update(); // Aktualizuj kontrolę, aby uwzględnić zmiany
+                controls.update();
                 animate();
             }, undefined, function(error) {
                 console.error('Wystąpił błąd podczas ładowania modelu:', error);
@@ -108,7 +107,7 @@
 
                 resizeRendererToDisplaySize(renderer);
 
-                controls.update(); // Aktualizuj kontrolę w każdej klatce
+                controls.update();
 
                 renderer.render(scene, camera);
             }
