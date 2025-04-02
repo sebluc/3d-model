@@ -13,22 +13,29 @@
         body {
             font-family: 'Inter', sans-serif;
             margin: 0;
-            overflow: hidden; /* Zapobiega pojawianiu się pasków przewijania */
+            overflow: hidden;
+            display: flex; /* Dodaj flexbox do body */
+            justify-content: center; /* Wyśrodkuj w poziomie */
+            align-items: center; /* Wyśrodkuj w pionie */
+            min-height: 100vh; /* Zapewnij, że body zajmuje co najmniej wysokość ekranu */
+            background-color: #f0f0f0;
         }
         #model-viewer-container {
             width: 638px;
             height: 638px;
-            display: flex;
-            justify-content: center;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Dodaj cień */
+            display: flex; /* Użyj flexbox w kontenerze */
+            justify-content: center; /* Wyśrodkuj canvas w kontenerze */
             align-items: center;
-            background-color: #f0f0f0; /* Jasnoszary tło */
         }
-        /* Dodajmy styl dla kontenera, aby model był responsywny */
+
         #model-viewer {
-            width: 100%; /* Model zajmuje całą szerokość kontenera */
-            height: 100%; /* Model zajmuje całą wysokość kontenera */
-            max-width: 1200px; /* Maksymalna szerokość modelu */
-            max-height: 1200px; /* Maksymalna wysokość modelu */
+            width: 100%;
+            height: 100%;
+            max-width: 1200px;
+            max-height: 1200px;
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/three@0.139.0/build/three.min.js"></script>
@@ -39,7 +46,6 @@
     <div id="model-viewer-container">
         <canvas id="model-viewer"></canvas>
     </div>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const canvas = document.getElementById('model-viewer');
@@ -50,24 +56,24 @@
             renderer.setClearColor(0xf0f0f0);
 
             // Dodaj oświetlenie do sceny
-            const ambientLight = new THREE.AmbientLight(0x404040, 10); // Miękkie, ogólne oświetlenie
+            const ambientLight = new THREE.AmbientLight(0x404040, 10);
             scene.add(ambientLight);
 
             // Dodaj oświetlenie kierunkowe z różnych stron
             const directionalLight1 = new THREE.DirectionalLight(0xffffff, 8);
-            directionalLight1.position.set(1, 1, 2); // Światło z przodu, z góry i z prawej
+            directionalLight1.position.set(1, 1, 2);
             scene.add(directionalLight1);
 
             const directionalLight2 = new THREE.DirectionalLight(0xffffff, 8);
-            directionalLight2.position.set(-1, -1, -2); // Światło z tyłu, z dołu i z lewej
+            directionalLight2.position.set(-1, -1, -2);
             scene.add(directionalLight2);
 
             const directionalLight3 = new THREE.DirectionalLight(0xffffff, 8);
-            directionalLight3.position.set(0, 2, 0);  // Światło z góry
+            directionalLight3.position.set(0, 2, 0);
             scene.add(directionalLight3);
 
             const directionalLight4 = new THREE.DirectionalLight(0xffffff, 8);
-            directionalLight4.position.set(0, -2, 0); // Światło z dołu
+            directionalLight4.position.set(0, -2, 0);
             scene.add(directionalLight4);
 
             // Dodaj kontrolę orbit
@@ -84,28 +90,28 @@
             // Załaduj model .glb
             const loader = new THREE.GLTFLoader();
             loader.load('model.glb', function(gltf) {
-    const model = gltf.scene;
-    scene.add(model);
+                const model = gltf.scene;
+                scene.add(model);
 
-    // Center the model
-    const boundingBox = new THREE.Box3().setFromObject(model);
-    const center = new THREE.Vector3();
-    boundingBox.getCenter(center);
-    model.position.x -= center.x;
-    model.position.y -= center.y;
-    model.position.z -= center.z;
+                // Center the model
+                const boundingBox = new THREE.Box3().setFromObject(model);
+                const center = new THREE.Vector3();
+                boundingBox.getCenter(center);
+                model.position.x -= center.x;
+                model.position.y -= center.y;
+                model.position.z -= center.z;
 
-    // Skaluj model
-    model.scale.set(1, 1, 1); // Domyślne skalowanie (1, 1, 1) - bez zmian
-    model.scale.x = 1.0;  // Rozciągnij model 1.5 raza wzdłuż osi X (szerokość)
-    model.scale.y = 1.0;  // Rozciągnij model 1.2 raza wzdłuż osi Y (wysokość)
+                // Skaluj model
+                model.scale.set(1, 1, 1);
+                model.scale.x = 1.0;
+                model.scale.y = 1.0;
 
-    controls.target.set(model.position.x, model.position.y, model.position.z);
-    controls.update();
-    animate();
-}, undefined, function(error) {
-    console.error('Wystąpił błąd podczas ładowania modelu:', error);
-});
+                controls.target.set(model.position.x, model.position.y, model.position.z);
+                controls.update();
+                animate();
+            }, undefined, function(error) {
+                console.error('Wystąpił błąd podczas ładowania modelu:', error);
+            });
 
             function resizeRendererToDisplaySize(renderer) {
                 const canvas = renderer.domElement;
@@ -122,11 +128,8 @@
 
             function animate() {
                 requestAnimationFrame(animate);
-
                 resizeRendererToDisplaySize(renderer);
-
                 controls.update();
-
                 renderer.render(scene, camera);
             }
 
