@@ -84,23 +84,28 @@
             // Załaduj model .glb
             const loader = new THREE.GLTFLoader();
             loader.load('model.glb', function(gltf) {
-                const model = gltf.scene;
-                scene.add(model);
+    const model = gltf.scene;
+    scene.add(model);
 
-                // Center the model
-                const boundingBox = new THREE.Box3().setFromObject(model);
-                const center = new THREE.Vector3();
-                boundingBox.getCenter(center);
-                model.position.x -= center.x;
-                model.position.y -= center.y;
-                model.position.z -= center.z;
+    // Center the model
+    const boundingBox = new THREE.Box3().setFromObject(model);
+    const center = new THREE.Vector3();
+    boundingBox.getCenter(center);
+    model.position.x -= center.x;
+    model.position.y -= center.y;
+    model.position.z -= center.z;
 
-                controls.target.set(model.position.x, model.position.y, model.position.z);
-                controls.update();
-                animate();
-            }, undefined, function(error) {
-                console.error('Wystąpił błąd podczas ładowania modelu:', error);
-            });
+    // Skaluj model
+    model.scale.set(1, 1, 1); // Domyślne skalowanie (1, 1, 1) - bez zmian
+    model.scale.x = 1.5;  // Rozciągnij model 1.5 raza wzdłuż osi X (szerokość)
+    model.scale.y = 1.2;  // Rozciągnij model 1.2 raza wzdłuż osi Y (wysokość)
+
+    controls.target.set(model.position.x, model.position.y, model.position.z);
+    controls.update();
+    animate();
+}, undefined, function(error) {
+    console.error('Wystąpił błąd podczas ładowania modelu:', error);
+});
 
             function resizeRendererToDisplaySize(renderer) {
                 const canvas = renderer.domElement;
