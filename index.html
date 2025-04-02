@@ -81,7 +81,7 @@
             controls.minDistance = 1;
             controls.maxDistance = 100;
             controls.target.set(0, 0, 0);
-            camera.position.z = 5;
+            camera.position.z = 2;
 
             // Załaduj model .glb
             const loader = new THREE.GLTFLoader();
@@ -99,7 +99,7 @@
     model.position.z -= center.z;
 
     // Skaluj model
-    model.scale.set(3, 3, 3); // Domyślne skalowanie (1, 1, 1) - bez zmian
+    model.scale.set(1, 1, 1); // Domyślne skalowanie (1, 1, 1) - bez zmian
     model.scale.x = 1.0;  // Rozciągnij model 1.5 raza wzdłuż osi X (szerokość)
     model.scale.y = 1.0;  // Rozciągnij model 1.2 raza wzdłuż osi Y (wysokość)
 
