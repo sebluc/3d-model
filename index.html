@@ -17,8 +17,8 @@
             overflow: hidden; /* Zapobiega pojawianiu się pasków przewijania */
         }
         #model-viewer-container {
-            width: 550px;
-            height: 500px;
+            width: 800px;
+            height: 800px;
             justify-content: center;
             align-items: center;
             background-color: #f0f0f0; /* Jasnoszary tło */
@@ -27,227 +27,117 @@
         /* Dodajmy styl dla kontenera, aby model był responsywny */
 
         #model-viewer {
-
             width: 100%; /* Model zajmuje całą szerokość kontenera */
-
             height: 100%; /* Model zajmuje całą wysokość kontenera */
-
-            max-width: 1200px; /* Maksymalna szerokość modelu */
-
-            max-height: 1200px; /* Maksymalna wysokość modelu */
-
+            max-width: 800px; /* Maksymalna szerokość modelu */
+            max-height: 8000px; /* Maksymalna wysokość modelu */
         }
 
     </style>
-
     <script src="https://cdn.jsdelivr.net/npm/three@0.139.0/build/three.min.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/three@0.139.0/examples/js/controls/OrbitControls.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/three@0.139.0/examples/js/loaders/GLTFLoader.js"></script>
-
 </head>
 
 <body class="bg-gray-100">
-
     <div id="model-viewer-container">
-
         <canvas id="model-viewer"></canvas>
-
     </div>
 
-
-
     <script>
-
         document.addEventListener('DOMContentLoaded', function() {
-
             const canvas = document.getElementById('model-viewer');
-
             const scene = new THREE.Scene();
-
             const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-
             const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
-
             renderer.setSize(window.innerWidth, window.innerHeight);
-
             renderer.setClearColor(0xf0f0f0);
 
-
-
             // Dodaj oświetlenie do sceny
-
             const ambientLight = new THREE.AmbientLight(0x404040, 10); // Miękkie, ogólne oświetlenie
-
             scene.add(ambientLight);
 
-
-
             // Dodaj oświetlenie kierunkowe z różnych stron
-
             const directionalLight1 = new THREE.DirectionalLight(0xffffff, 8);
-
             directionalLight1.position.set(1, 1, 2); // Światło z przodu, z góry i z prawej
-
             scene.add(directionalLight1);
 
-
-
             const directionalLight2 = new THREE.DirectionalLight(0xffffff, 8);
-
             directionalLight2.position.set(-1, -1, -2); // Światło z tyłu, z dołu i z lewej
-
             scene.add(directionalLight2);
 
-
-
             const directionalLight3 = new THREE.DirectionalLight(0xffffff, 8);
-
             directionalLight3.position.set(0, 2, 0);  // Światło z góry
-
             scene.add(directionalLight3);
 
-
-
             const directionalLight4 = new THREE.DirectionalLight(0xffffff, 8);
-
             directionalLight4.position.set(0, -2, 0); // Światło z dołu
-
             scene.add(directionalLight4);
 
-
-
             // Dodaj kontrolę orbit
-
             const controls = new THREE.OrbitControls(camera, renderer.domElement);
-
             controls.enableDamping = true;
-
             controls.dampingFactor = 0.1;
-
             controls.screenSpacePanning = true;
-
             controls.minDistance = 1;
-
             controls.maxDistance = 100;
-
             controls.target.set(0, 0, 0);
-
-
-
             camera.position.z = 5;
 
-
-
             // Załaduj model .glb
-
             const loader = new THREE.GLTFLoader();
-
             loader.load('model.glb', function(gltf) {
 
     const model = gltf.scene;
-
     scene.add(model);
 
-
-
     // Center the model
-
     const boundingBox = new THREE.Box3().setFromObject(model);
-
     const center = new THREE.Vector3();
-
     boundingBox.getCenter(center);
-
     model.position.x -= center.x;
-
     model.position.y -= center.y;
-
     model.position.z -= center.z;
 
-
-
     // Skaluj model
-
     model.scale.set(1, 1, 1); // Domyślne skalowanie (1, 1, 1) - bez zmian
-
     model.scale.x = 1.0;  // Rozciągnij model 1.5 raza wzdłuż osi X (szerokość)
-
     model.scale.y = 1.0;  // Rozciągnij model 1.2 raza wzdłuż osi Y (wysokość)
 
-
-
     controls.target.set(model.position.x, model.position.y, model.position.z);
-
     controls.update();
-
     animate();
 
 }, undefined, function(error) {
-
     console.error('Wystąpił błąd podczas ładowania modelu:', error);
-
 });
 
-
-
             function resizeRendererToDisplaySize(renderer) {
-
                 const canvas = renderer.domElement;
-
                 const width = window.innerWidth;
-
                 const height = window.innerHeight;
-
                 const needResize = canvas.width !== width || canvas.height !== height;
 
                 if (needResize) {
-
                     renderer.setSize(width, height, false);
-
                     camera.aspect = width / height;
-
                     camera.updateProjectionMatrix();
-
                 }
-
                 return needResize;
-
             }
-
-
 
             function animate() {
-
                 requestAnimationFrame(animate);
-
-
-
                 resizeRendererToDisplaySize(renderer);
-
-
-
                 controls.update();
-
-
-
                 renderer.render(scene, camera);
-
             }
 
-
-
             window.addEventListener('resize', function() {
-
                 resizeRendererToDisplaySize(renderer);
-
             });
-
         });
-
     </script>
 
 </body>
-
 </html>
