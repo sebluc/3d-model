@@ -27,8 +27,8 @@
         #model-viewer {
             width: 100%; /* Model zajmuje całą szerokość kontenera */
             height: 100%; /* Model zajmuje całą wysokość kontenera */
-            max-width: 800px; /* Maksymalna szerokość modelu */
-            max-height: 600px; /* Maksymalna wysokość modelu */
+            max-width: 1200px; /* Maksymalna szerokość modelu */
+            max-height: 1200px; /* Maksymalna wysokość modelu */
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/three@0.139.0/build/three.min.js"></script>
@@ -40,7 +40,7 @@
         <canvas id="model-viewer"></canvas>
     </div>
 
-    Rozumiem, model wygląda na niedoświetlony. Najprawdopodobniej problem leży w oświetleniu Three.js. Domyślna scena Three.js jest pusta, co oznacza, że ​​nie ma w niej żadnego światła. Aby model był widoczny, musisz dodać do sceny oświetlenie.W Twoim kodzie dodałeś już oświetlenie, ale wygląda na to, że jest ono niewystarczające lub nieprawidłowo skonfigurowane.Aby to naprawić, proponuję dostosować oświetlenie w Twojej scenie Three.js. Poniżej znajdziesz zmodyfikowany kod JavaScript, który zawiera dwa rodzaje oświetlenia: AmbientLight i DirectionalLight. AmbientLight oświetla wszystkie obiekty w scenie równomiernie, a DirectionalLight symuluje światło padające z określonego kierunku.<script>
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             const canvas = document.getElementById('model-viewer');
             const scene = new THREE.Scene();
@@ -97,8 +97,8 @@
 
     // Skaluj model
     model.scale.set(1, 1, 1); // Domyślne skalowanie (1, 1, 1) - bez zmian
-    model.scale.x = 1.5;  // Rozciągnij model 1.5 raza wzdłuż osi X (szerokość)
-    model.scale.y = 1.2;  // Rozciągnij model 1.2 raza wzdłuż osi Y (wysokość)
+    model.scale.x = 1.0;  // Rozciągnij model 1.5 raza wzdłuż osi X (szerokość)
+    model.scale.y = 1.0;  // Rozciągnij model 1.2 raza wzdłuż osi Y (wysokość)
 
     controls.target.set(model.position.x, model.position.y, model.position.z);
     controls.update();
